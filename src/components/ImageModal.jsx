@@ -1,25 +1,40 @@
-import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import React, {useState} from "react";
+import Modal from 'react-modal';
 
-const ImageModal = ({ show, image, onHide }) => {
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+    },
+};
+
+Modal.setAppElement('#root');
+
+const ImageModal = ({image, onHide }) => {
   if (!image) {
     return null;
   }
+  const [isShow, setVisibility] = useState(true)
+
+  const hideModal = () => {
+      setVisibility(false)
+      onHide()
+  }
 
   return (
-    <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>{image.description || "No description"}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <img src={image.urls.regular} alt={image.description} />
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
+
+      <Modal
+          isOpen={isShow}
+          onRequestClose={hideModal}
+          style={customStyles}
+          contentLabel="Img Modal"
+      >
+          <img src={image.urls.regular} alt={image.description} />
+      </Modal>
   );
 };
 

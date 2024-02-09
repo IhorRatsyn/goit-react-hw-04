@@ -94,6 +94,22 @@ header form button[type="submit"] {
   display: block;
 }
 
+.image-gallery {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.img-item {
+  width: 300px;
+  height: 300px;
+}
+.img-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .load-more-btn:hover {
   background-color: #444;
 }

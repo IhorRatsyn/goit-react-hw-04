@@ -1,10 +1,13 @@
 import React from "react";
 
-const ImageCard = ({ src, alt }) => {
+const ImageCard = ({ image, onImageClick }) => {
   return (
-    <div>
-      <img src={src} alt={alt} />
+    <div className="img-item" onClick={() => onImageClick(image)}>
+      <img src={image.urls.small} alt={image.alt} />
+
     </div>
+
+
   );
 };
 

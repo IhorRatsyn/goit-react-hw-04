@@ -1,8 +1,8 @@
 import React from "react";
-import Loader from "react-loader-spinner";
+import {InfinitySpin} from "react-loader-spinner";
 
 const LoaderComponent = () => {
-  return <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />;
+  return <InfinitySpin type="TailSpin" color="#00BFFF" height={50} width={50} />;
 };
 
 const Loader = () => (
