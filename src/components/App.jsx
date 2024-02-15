@@ -7,25 +7,27 @@ import "./App.css";
 import SearchBar from "./SearchBar.jsx";
 import Loader from "./Loader.jsx";
 import LoadMoreBtn from "./LoadMoreBtn.jsx";
+import {getGallery} from "./requests.js";
 
 const App = () => {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [query, setQuery] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-  }, [page]);
+    useEffect(() => {
+      if(query !== ''){
+        fetchData()
+      }
+    }, [page, query]);
 
-  const fetchData = async (query = 'nature') => {
-    setImages([])
+  const fetchData = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-          `https://api.unsplash.com/search/photos?query=${query}&page=${page}&per_page=20&client_id=jyHtcJel_8-BSXel3Wj3NRyx8I2Wm-Lt1taR-d_iRF8`
-      );
+      const response = await getGallery(query, page)
       setImages((prevImages) => [...prevImages, ...response.data.results]);
     } catch (error) {
       setError(error.message);
@@ -35,7 +37,8 @@ const App = () => {
   };
 
   const handleSearch = (query) => {
-    fetchData(query)
+    setImages([])
+    setQuery(query)
     setPage(1);
   };
 
@@ -58,7 +61,7 @@ const App = () => {
   return (
       <>
         <SearchBar onSubmit={handleSearch} />
-        <ImageGallery images={images} onImageClick={handleImageClick} />
+        {images.length ? <ImageGallery images={images} onImageClick={handleImageClick} /> : <ErrorMessage errorMessage={error} /> }
         {isLoading && <Loader />}
         {images.length > 0 && (
             <LoadMoreBtn onClick={handleLoadMore} isLoading={isLoading} />

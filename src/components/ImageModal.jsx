@@ -18,18 +18,11 @@ const ImageModal = ({image, onHide }) => {
   if (!image) {
     return null;
   }
-  const [isShow, setVisibility] = useState(true)
-
-  const hideModal = () => {
-      setVisibility(false)
-      onHide()
-  }
-
   return (
 
       <Modal
-          isOpen={isShow}
-          onRequestClose={hideModal}
+          isOpen={true}
+          onRequestClose={onHide}
           style={customStyles}
           contentLabel="Img Modal"
       >
