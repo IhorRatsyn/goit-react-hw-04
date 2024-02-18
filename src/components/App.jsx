@@ -6,7 +6,7 @@ import "./App.css";
 import SearchBar from "./SearchBar.jsx";
 import Loader from "./Loader.jsx";
 import LoadMoreBtn from "./LoadMoreBtn.jsx";
-import {getGallery} from "./requests.js";
+import { getGallery } from "./requests.js";
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -14,16 +14,16 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasLoadMoreBtn, setVisibilityLoadMoreBtn] = useState(false);
   const [error, setError] = useState(null);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
   const fetchData = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await getGallery(query, page)
+      const response = await getGallery(query, page);
       setImages((prevImages) => [...prevImages, ...response.data.results]);
-      setVisibilityLoadMoreBtn(response.data.total_pages >= page)
+      setVisibilityLoadMoreBtn(response.data.total_pages >= page);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -31,17 +31,15 @@ const App = () => {
     }
   };
 
-
   useEffect(() => {
-      if(query !== ''){
-        fetchData()
-      }
-    }, [page, query]);
-
+    if (query !== "") {
+      fetchData();
+    }
+  }, [page, query]);
 
   const handleSearch = (query) => {
-    setImages([])
-    setQuery(query)
+    setImages([]);
+    setQuery(query);
     setPage(1);
   };
 
@@ -62,17 +60,21 @@ const App = () => {
   }
 
   return (
-      <>
-        <SearchBar onSubmit={handleSearch} />
-        {images.length ? <ImageGallery images={images} onImageClick={handleImageClick} /> : <ErrorMessage errorMessage={error} /> }
-        {isLoading && <Loader />}
-        {hasLoadMoreBtn && (
-            <LoadMoreBtn onClick={handleLoadMore} isLoading={isLoading} />
-        )}
-        {selectedImage && (
-            <ImageModal image={selectedImage} onHide={handleModalClose} />
-        )}
-      </>
+    <>
+      <SearchBar onSubmit={handleSearch} />
+      {images.length ? (
+        <ImageGallery images={images} onImageClick={handleImageClick} />
+      ) : (
+        <ErrorMessage errorMessage={error} />
+      )}
+      {isLoading && <Loader />}
+      {hasLoadMoreBtn && (
+        <LoadMoreBtn onClick={handleLoadMore} isLoading={isLoading} />
+      )}
+      {selectedImage && (
+        <ImageModal image={selectedImage} onHide={handleModalClose} />
+      )}
+    </>
   );
 };
 
