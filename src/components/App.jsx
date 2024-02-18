@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import ImageGallery from "./ImageGallery";
 import ErrorMessage from "./ErrorMessage";
 import ImageModal from "./ImageModal";
@@ -13,15 +12,10 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasLoadMoreBtn, setVisibilityLoadMoreBtn] = useState(false);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
-
-    useEffect(() => {
-      if(query !== ''){
-        fetchData()
-      }
-    }, [page, query]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -29,12 +23,21 @@ const App = () => {
     try {
       const response = await getGallery(query, page)
       setImages((prevImages) => [...prevImages, ...response.data.results]);
+      setVisibilityLoadMoreBtn(response.data.total_pages >= page)
     } catch (error) {
       setError(error.message);
     } finally {
       setIsLoading(false);
     }
   };
+
+
+  useEffect(() => {
+      if(query !== ''){
+        fetchData()
+      }
+    }, [page, query]);
+
 
   const handleSearch = (query) => {
     setImages([])
@@ -63,7 +66,7 @@ const App = () => {
         <SearchBar onSubmit={handleSearch} />
         {images.length ? <ImageGallery images={images} onImageClick={handleImageClick} /> : <ErrorMessage errorMessage={error} /> }
         {isLoading && <Loader />}
-        {images.length > 0 && (
+        {hasLoadMoreBtn && (
             <LoadMoreBtn onClick={handleLoadMore} isLoading={isLoading} />
         )}
         {selectedImage && (

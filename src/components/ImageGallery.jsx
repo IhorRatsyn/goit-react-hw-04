@@ -9,7 +9,6 @@ const ImageGallery = ({ images, onImageClick }) => {
           <ImageCard key={image.id} image={image} onImageClick={onImageClick}/>
         ))}
       </ul>
-      {/*{images.length > 0 && <LoadMoreBtn onClick={loadMoreImages} />}{" "}*/}
     </div>
   );
 };

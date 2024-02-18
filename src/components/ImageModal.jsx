@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 
 const customStyles = {
@@ -15,13 +16,13 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 const ImageModal = ({image, onHide }) => {
-  if (!image) {
+  if (!image && image.urls && image.description) {
     return null;
   }
   return (
 
       <Modal
-          isOpen={true}
+          isOpen={!!image}
           onRequestClose={onHide}
           style={customStyles}
           contentLabel="Img Modal"
@@ -32,3 +33,9 @@ const ImageModal = ({image, onHide }) => {
 };
 
 export default ImageModal;
+
+ImageModal.propTypes = {
+    image: PropTypes.object.isRequired,
+    onHide: PropTypes.func.isRequired,
+};
+
