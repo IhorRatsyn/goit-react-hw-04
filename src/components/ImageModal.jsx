@@ -16,7 +16,7 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const ImageModal = ({ image, onHide }) => {
-  if (!image && image.urls && image.description) {
+  if (!image || !image.urls || !image.description) {
     return null;
   }
   return (
@@ -34,6 +34,11 @@ const ImageModal = ({ image, onHide }) => {
 export default ImageModal;
 
 ImageModal.propTypes = {
-  image: PropTypes.object.isRequired,
+  image: PropTypes.shape({
+    urls: PropTypes.shape({
+      regular: PropTypes.string.isRequired,
+    }).isRequired,
+    description: PropTypes.string.isRequired,
+  }),
   onHide: PropTypes.func.isRequired,
 };
